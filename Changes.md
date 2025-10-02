@@ -9,6 +9,9 @@ the APIs or flight performance.
 The decimator is changed to use a Bessel filter (#287). It should give more
 consistent D-term reaction on transients.
 
+PID Mode 4 is introduced for testing new features (#293). The current default
+PID Mode 3 is maintained for backward compatibility.
+
 
 ## MSP Changes
 
@@ -37,6 +40,10 @@ at least once per second to keep the override active (#304).
 
 This legacy MSP call is disabled, as it does not have a timeout (#304).
 
+### MSP_SET_PID_PROFILE
+
+The `pid_mode` parameter can be now changed.
+
 
 ## CLI Changes
 
@@ -52,6 +59,11 @@ the PID loop rate to half too.
 
 `deadband` parameter maximum value is changed from 32 to 100 (#327).
 
+`rc_arm_throttle` parameter is removed (#332).
+
+`rc_min_throttle` and `rc_max_throttle` parameters default to zero, indicating that
+the actual values are calculated automatically (#332).
+
 
 ## Defaults
 
@@ -60,6 +72,10 @@ the PID loop rate to half too.
 `rescue_flip` default is changed from OFF to ON.
 
 `deadband` and `yaw_deadband` defaults changed to 5.
+
+`rc_min_throttle` and `rc_max_throttle` defaults are changed to 0.
+
+`motor_poles` default is changed to 0,0,0,0.
 
 
 ## Features
@@ -94,6 +110,31 @@ The RPM frame (0x0C) supports sending headspeed and tail speed.
 The temperature frame (0x0D) supports MCU and ESC temperatures.
 
 Two new RF Telemetry sensors are added: RPM (108) and TEMP (109).
+
+### Throttle Range calculated automatically (#332)
+
+The input throttle range is now calculated automatically from `rc_deflection`.
+It can be still set by the user with `rc_min_throttle` and `rc_max_throttle`.
+The parameter `rc_arm_throttle` is removed, and arming is allowed when
+input throttle is well below `rc_min_throttle`.
+
+### Motor Pole Count (#333)
+
+The default pole count is now zero, which is effectively disabling the RPM input.
+This forces the user to enter the correct number, before the RPM input can be used.
+
+### PID Mode 4 (#293)
+
+All new features and changes to the PID controller are done in the new PID mode 4.
+The current PID Mode 3 will be kept as-is for backward compatibility.
+
+**Changes:**
+- axis_error changed from actual angle to I-term units
+- I-gains, O-gains and F-gains forced to be the same for roll & pitch
+- I-term decay forced if I-gain is zero (Rate Mode)
+- Pitch B-gain scaled x10
+- Roll B-gain and D-gain scaled /5
+- Yaw precomp cutoff scaled by /10
 
 
 ## Bug Fixes
