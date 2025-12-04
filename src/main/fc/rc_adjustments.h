@@ -144,6 +144,14 @@ typedef enum {
     // Precomp cutoff
     ADJUSTMENT_YAW_PRECOMP_CUTOFF       = 75,
 
+    // Governor
+    ADJUSTMENT_GOV_IDLE_THROTTLE        = 76,
+    ADJUSTMENT_GOV_AUTO_THROTTLE        = 77,
+    ADJUSTMENT_GOV_MAX_THROTTLE         = 78,
+    ADJUSTMENT_GOV_MIN_THROTTLE         = 79,
+    ADJUSTMENT_GOV_HEADSPEED            = 80,
+    ADJUSTMENT_GOV_YAW_FF               = 81,
+
     ADJUSTMENT_FUNCTION_COUNT
 } adjustmentFunc_e;
 
