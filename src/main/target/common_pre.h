@@ -344,6 +344,7 @@ extern uint8_t _dmaram_end__;
 #define USE_TELEMETRY_LTM
 #define USE_SERIALRX_SUMH       // Graupner legacy protocol
 #define USE_SERIALRX_XBUS       // JR
+#define USE_TELEMETRY_JRDMSS	// JR Telemetry
 #endif
 
 #if ((TARGET_FLASH_SIZE > 256) || (FEATURE_CUT_LEVEL < 1))

@@ -119,27 +119,6 @@ static uint8_t xBusProvider;
 static volatile uint8_t xBusFrame[XBUS_MODEA_FRAME_SIZE];  // size 69 for 16 channels in xbus_Mode_A
 static uint16_t xBusChannelData[XBUS_MODEA_CHANNEL_COUNT];
 
-// xBus Mode A uses an 8-bit CRC based on Dallas/Maxim
-// Will use one of the CRC functions in common/crc.c once I can get it working
-// Currently when using a poly of 0x31 and base of 0x00, the wrong values are being
-// returned.
-uint8_t crc8_dallas(const uint8_t* data, const uint8_t size)
-{
-    uint8_t crc = 0;
-    for (uint8_t i = 0; i < size; ++i)
-    {
-        uint8_t inbyte = data[i];
-        for (uint8_t j = 0; j < 8; ++j)
-        {
-            uint8_t mix = (crc ^ inbyte) & 0x01;
-            crc >>= 1;
-            if (mix) crc ^= 0x8C;
-            inbyte >>= 1;
-        }
-    }
-    return crc;
-}
-
 // Full RJ01 message CRC calculations
 static uint8_t xBusRj01CRC8(uint8_t inData, uint8_t seed)
 {

@@ -60,6 +60,7 @@
 #include "telemetry/ibus.h"
 #include "telemetry/sbus2.h"
 #include "telemetry/msp_shared.h"
+#include "telemetry/jrdmss.h"
 
 
 serialPort_t *telemetrySharedPort = NULL;
@@ -143,6 +144,9 @@ void telemetryProcess(timeUs_t currentTime)
 #ifdef USE_TELEMETRY_SBUS2
     handleSbus2Telemetry(currentTime);
 #endif
+#ifdef USE_TELEMETRY_JRDMSS
+    handleJRDMSSTelemetry(currentTime);
+#endif
 }
 
 void telemetryCheckState(void)
@@ -179,6 +183,9 @@ void telemetryCheckState(void)
 #endif
 #ifdef USE_TELEMETRY_SBUS2
     checkSbus2TelemetryState();
+#endif
+#ifdef USE_TELEMETRY_JRDMSS
+    checkJRDMSSTelemetryState();
 #endif
 }
 
@@ -221,6 +228,9 @@ void INIT_CODE telemetryInit(void)
 #endif
 #if defined(USE_MSP_OVER_TELEMETRY)
     initSharedMsp();
+#endif
+#ifdef USE_TELEMETRY_JRDMSS
+    initJRDMSSTelemetry();
 #endif
 
     telemetryCheckState();

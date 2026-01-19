@@ -50,3 +50,5 @@ void crc8_xor_sbuf_append(struct sbuf_s *dst, const void *data);
 #define FNV_OFFSET_BASIS    2166136261
 
 uint32_t fnv_update(uint32_t hash, const void *data, uint32_t length);
+
+uint8_t crc8_dallas(const uint8_t* data, const uint8_t size);
