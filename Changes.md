@@ -114,9 +114,31 @@ Modified to support bus servos. When bus servos are configured, the index parame
 
 The `cyclic_ring` parameter is added (#345).
 
+The `cyclic_polar` parameter is added (#426).
+
 ### MSP_GET_ADJUSTMENT_FUNCTION_IDS
 
 Added a call to deliver the function id in use per slot (#398)
+
+### MSP_BATTERY_STATE
+
+The `batteryProfile` field is added. (#415)
+
+### MSP_BATTERY_CONFIG
+
+The `batteryCapacity` array is added. (#415)
+
+### MSP_SET_BATTERY_CONFIG
+
+The `batteryCapacity` array is added. (#415)
+
+### MSP_BATTERY_PROFILE
+
+New MSP command to get the active battery profile. (#415)
+
+### MSP_SET_BATTERY_PROFILE
+
+New MSP command to set the active battery profile. (#415)
 
 
 ## CLI Changes
@@ -130,6 +152,10 @@ the PID loop rate to half too.
 `model_set_name` parameter added (ON/OFF). Corresponds with bit 0 of `pilotConfig_t.modelFlags` and is used to indicate whether the Lua scripts should set the name of the model on the radio.
 
 `model_tell_capacity` parameter added (ON/OFF). Corresponds with bit 1 of `pilotConfig_t.modelFlags` and is used to indicate whether the Lua scripts should announce the remaining capacity of the battery.
+
+`board_name`, `board_design`, and `manufacturer_id` now display a detailed
+incompatible-configuration warning and halt the system when an attempt is made
+to change them after they have been set. Previously only an error was shown.
 
 `deadband` parameter maximum value is changed from 32 to 100 (#327).
 
@@ -184,6 +210,14 @@ the actual values are calculated automatically (#332).
 
 `gyro_offset_yaw` is removed (#391).
 
+`bat_capacity` parameter changed from a single value to an array of 6 values (one for each battery profile).
+
+`bat_profile` parameter added. Value in 0-5, selects the active battery profile.
+
+`pid_gyro_filter_type` and `yaw_precomp_filter_type` parameters are removed (#414).
+
+`serialrx_provider` extended to include `IBUS2` as a protocol option
+
 
 ## Defaults
 
@@ -218,6 +252,23 @@ the actual values are calculated automatically (#332).
 `blackbox_log_governor` default is changed to ON (#412).
 
 `blackbox_rolling_erase` default is changed to ON (#412).
+
+`roll_srate` default is changed to 12 (#413).
+
+`pitch_srate` default is changed to 12 (#413).
+
+`yaw_srate` default is changed to 12 (#413).
+
+`collective_srate` default is changed to 12 (#413).
+
+`error_limit` default is changed to 45,45,60 (#425).
+
+`offset_limit` default is changed to 90,90 (#425).
+
+
+## CRSF Custom Telemetry
+
+`BATTERY_PROFILE` sensor 0x1214 type U8 is added.
 
 
 ## Features
@@ -302,6 +353,11 @@ completes. The existing CLI parameters are unchanged.
 Minor changes introduced to all three presets for better match to common
 use cases.
 
+## Receiver Protocols
+
+### IBUS 2 Support (#424)
+
+Support for the IBUS2 protocol for control link and basic telemetry using the ibus hub protocol.
 
 ## Bug Fixes
 
