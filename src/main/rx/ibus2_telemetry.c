@@ -64,6 +64,8 @@
 #define IBUS2_RESPONSE_DELAY_US                160
 #define IBUS_TEMPERATURE_OFFSET                400
 
+#define IBUS2_DEVICE_FLAG_CHANNELS_TYPES        (1 << 0)
+
 typedef enum {
     IBUS2_CMD_RESET = 0,
     IBUS2_CMD_GET_TYPE = 1,
@@ -266,8 +268,8 @@ static uint16_t ibus2GetFuel(void)
 {
     const escSensorData_t *escData = ibus2GetCombinedEscData();
 
-    if (getBatteryCapacity() > 0) {
-        return (uint16_t)calculateBatteryPercentageRemaining();
+    if (isBatteryChargeLevelAvailable()) {
+        return (uint16_t)getBatteryChargeLevel();
     }
 
     if (escData) {
@@ -478,7 +480,7 @@ static void ibus2SendGetTypeResponse(uint8_t address)
     if (address == IBUS2_HUB_ADDRESS || ibus2GetDeviceIndexForAddress(address) >= 0) {
         payload[0] = deviceType;
         payload[1] = valueLength;
-        payload[2] = 0;
+        payload[2] = (address == IBUS2_HUB_ADDRESS) ? IBUS2_DEVICE_FLAG_CHANNELS_TYPES : 0;
         ibus2SendResponse(IBUS2_CMD_GET_TYPE, payload, sizeof(payload));
     }
 }
